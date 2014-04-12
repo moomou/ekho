@@ -1,0 +1,67 @@
+(function(ekho) {
+    function loadJS(src, callback) {
+        var s = document.createElement('script');
+        s.src = src;
+        s.async = true;
+        s.onreadystatechange = s.onload = function() {
+            var state = s.readyState;
+            if (!callback.done && (!state || /loaded|complete/.test(state))) {
+                callback.done = true;
+                callback();
+            }
+        };
+        document.getElementsByTagName('head')[0].appendChild(s);
+    }
+    function loadJSWrapper(order) {
+      if (order.length) {
+        console.log(order[0]);
+        loadJS(order[0], function() {
+          loadJSWrapper(order.splice(1));
+        });
+      }
+    }
+
+    var _scripTagId = '{{SCRIPT_ID}}',
+        _url = '{{SERVER_URL}}',
+        _divId = '{{DIV_ID}}',
+        _rendered = '{{{RENDERED}}}',
+        styleTag = document.createElement('link');
+
+    localStorage.setItem('ekho::ui', '{{ENABLE_UI}}');
+
+    styleTag.rel   = 'stylesheet';
+    styleTag.type  = 'text/css';
+    styleTag.href  = _url + 'static/style.css';
+    styleTag.media = 'all';
+    document.getElementsByTagName('head')[0].appendChild(styleTag);
+
+    styleTag       = document.createElement('link');
+    styleTag.rel   = 'stylesheet';
+    styleTag.type  = 'text/css';
+    styleTag.href  = _url + 'static/cleanslate.css';
+    styleTag.media = 'all';
+    document.getElementsByTagName('head')[0].appendChild(styleTag);
+
+    var div       = document.createElement('div');
+    div.id        = _divId;
+    div.innerHTML = _rendered;
+    div.className = 'ekho-container cleanslate';
+
+    var jqueryJS = 'http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js';
+    var fuzzySetJS =  _url + 'static/fuzzyset.js';
+    var ekhoJS = _url + 'static/ekho.js';
+
+    var fuzzySetLoaded = typeof FuzzySet !== 'undefined',
+        jQueryLoaded = typeof jQuery !== 'undefined',
+        loadOrder = [];
+
+    if (!jQueryLoaded) {
+      loadOrder.push(jqueryJS);
+    }
+    if (!fuzzySetLoaded) {
+      loadOrder.push(fuzzySetJS);
+    }
+    loadOrder.push(ekhoJS);
+
+    loadJSWrapper(loadOrder);
+})(this);

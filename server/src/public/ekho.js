@@ -246,7 +246,6 @@
           Speech.start();
         }
       }, 2000);
-
     }
 
     window.addEventListener('click', function(e) {
