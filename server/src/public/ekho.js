@@ -23,7 +23,7 @@
         return path;
     };
 
-    var username   = null,
+    var username   = "jackhxs",
         fuzzySet   = FuzzySet(),
         SERVER_URL = 'http://localhost:3000';
 
@@ -55,11 +55,13 @@
                 url: getServerUrl(),
             })
             .done(function(data) {
+                debugger;
                 if (data.success) {
                     console.log('Cmd succeeded');
                     handler(data.payload);
                 } else {
                     console.log('Cmd get failed.');
+                    console.log(data);
                 }
                 if (cb) {
                     cb(msg.success, '??');
@@ -152,7 +154,7 @@
 
       var init = function() {
         fuzzySet.add("record");
-        fuzzySet.add("compose");
+        fuzzySet.add("done");
 
         recognition = new webkitSpeechRecognition();
         recognition.continuous = true;
@@ -178,9 +180,10 @@
               transcript = transcript.trim();
               console.log(transcript);
 
+              // done recording
               if (CmdCenter.isRecording()) {
-                // done recording
                 key = CmdCenter.matchKey(transcript);
+                console.log("is recording: ", key);
                 if (key == "done") {
                   CmdCenter.stopRecording();
                   CmdCenter.saveRecording();
@@ -243,15 +246,6 @@
     } else {
       Speech.init();
 
-      //function startButton(event) {
-        //if (recognizing) {
-          //recognition.stop();
-        //}
-        //else {
-          //recognition.start();
-        //}
-      //}
-
       setInterval(function() {
         if (!Speech.isRecognizing()) {
           Speech.start();
@@ -277,7 +271,7 @@
         if (charCode) {
             console.log('Character typed: ' + String.fromCharCode(charCode));
             if (CmdCenter.isRecording()) {
-                CmdCenter.addEvent.push({
+                CmdCenter.addEvent({
                     event: 'keypress',
                     selector: $el.getPath(),
                     value: charCode,
