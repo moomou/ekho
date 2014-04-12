@@ -271,6 +271,7 @@
     });
 
     document.onkeypress = function(e) {
+        var $el = $(document.activeElement);
         e = e || window.event;
         var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
         if (charCode) {
