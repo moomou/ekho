@@ -112,15 +112,20 @@
             isRecording: function() {
                 return recording;
             },
+            addEvent: function(event) {
+                allEvents.push(event);
+            },
             matchKey: function(key) {
-                var cmdKeys = fuzzySet.get(key);
-                if (cmdKey && cmdKey[0] > 0.65) {
-                  return cmdKey[1];
+                var cmdKey = fuzzySet.get(key);
+                console.log("cmdKey: ", cmdKey);
+                if (cmdKey && cmdKey[0][0] > 0.65) {
+                  console.log("cmdKey: ", cmdKey[0][1]);
+                  return cmdKey[0][1];
                 }
                 return null;
             },
             exeCmd: function(key) {
-                var events = JSON.parse(localStorage.get(key));
+                var events = JSON.parse(localStorage.getItem(key));
                 events.each(function(ev) {
                     replayEvent(ev);
                 });
@@ -132,9 +137,11 @@
                 recording = false;
                 savedEvents = allEvents.slice();
                 allEvents = [];
+                console.log("stop recording");
             },
             saveRecording: function() {
                 Server.addCmd(username, savedEvents, UI.update);
+                console.log("save recording");
             }
         };
     })();
@@ -144,6 +151,9 @@
       var recognizing;
 
       var init = function() {
+        fuzzySet.add("record");
+        fuzzySet.add("compose");
+
         recognition = new webkitSpeechRecognition();
         recognition.continuous = true;
         recognition.interimResults = true;
@@ -182,6 +192,7 @@
               if (transcript.indexOf("hello echo") >= 0) {
                 command = transcript.slice(transcript.indexOf("hello echo") + 11);
                 key = CmdCenter.matchKey(command);
+                console.log("key: ", key);
                 if (key == "record") {
                   CmdCenter.startRecording();
                 } else {
@@ -252,7 +263,7 @@
         var $el = $(e.target);
         console.log('Clicked: ' + $el.getPath());
         if (CmdCenter.isRecording()) {
-            allEvents.push({
+            CmdCenter.addEvent({
                 event: 'click',
                 selector: $el.getPath(),
             });
@@ -265,7 +276,7 @@
         if (charCode) {
             console.log('Character typed: ' + String.fromCharCode(charCode));
             if (CmdCenter.isRecording()) {
-                allEvents.push({
+                CmdCenter.addEvent.push({
                     event: 'keypress',
                     selector: $el.getPath(),
                     value: charCode,
