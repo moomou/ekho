@@ -11,6 +11,7 @@
     "express": "^4.0.0",
     "express-json": "^0.1.0",
     "express-namespace": "^0.1.1",
-    "body-parser": "^1.0.1"
+    "body-parser": "^1.0.1",
+    "handlebars": "^2.0.0-alpha.2"
   }
 }

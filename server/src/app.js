@@ -1,16 +1,18 @@
 require('express-namespace');
 
-var express = require('express'),
-    json = require('express-json'),
+var express    = require('express'),
+    json       = require('express-json'),
     bodyParser = require('body-parser'),
-    main = require('./routes/main'),
-    app = express();
+    main       = require('./routes/main'),
+    embed      = require('./routes/embed'),
+    app        = express();
 
 app.version = '/v0';
 app.set('port', process.env.PORT || 3000);
 app.use(json());
 app.use(bodyParser());
 
+app.use('/static', express.static(__dirname + '/public'));
 
 var addCORSHeaders = function(req, res, next) {
     res.header("Content-Type", "application/json");
@@ -25,6 +27,16 @@ var addCORSHeaders = function(req, res, next) {
 };
 
 app.all('*', addCORSHeaders);
+
+app.get('/embed/bootstrap.js', function(req, res, next) {
+    return embed.bootstrap(req, res, next);
+});
+
+app.get('/embed/ekho.js', function(req, res, next) {
+    return embed.ekho(req, res, next);
+});
+
+
 app.get('/:userId/:url/commands', function(req, res, next) {
     // return all command
     return main.show(req, res, next);
