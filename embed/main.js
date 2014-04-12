@@ -23,8 +23,8 @@
         return path;
     };
 
-    var username = null,
-        fuzzySet = FuzzySet(),
+    var username   = null,
+        fuzzySet   = FuzzySet(),
         SERVER_URL = 'http://localhost:3000';
 
     var UI = (function() {
@@ -69,7 +69,7 @@
 
         return {
             // Gets the cmd from server and caches locally.
-            getCmd: function(cb) {
+            getCmds: function(cb) {
                 ajaxCall(getServerUrl(), 'GET', function(data) {
                     Object.keys(data).map(function(key) {
                         localStorage.setItem(key, JSON.stringify(data[key]));
@@ -86,7 +86,7 @@
             delCmd: function(cmdName, cb) {
                 ajaxCall(getServerUrl(cmdName, 'DELETE', function(data) {
                     localStorage.remove(key);
-                }, cb);
+                }, cb));
             }
         };
     })();
@@ -112,14 +112,18 @@
             isRecording: function() {
                 return recording;
             },
-            exeCmd: function(key) {
+            matchKey: function(key) {
                 var cmdKeys = fuzzySet.get(key);
                 if (cmdKey && cmdKey[0] > 0.65) {
-                    var events = JSON.parse(localStorage.get(cmdKey[1]));
-                    events.each(function(ev) {
-                        replayEvent(ev);
-                    });
+                  return cmdKey[1];
                 }
+                return null;
+            },
+            exeCmd: function(key) {
+                var events = JSON.parse(localStorage.get(key));
+                events.each(function(ev) {
+                    replayEvent(ev);
+                });
             },
             startRecording: function() {
                 recording = true;
@@ -130,12 +134,120 @@
                 allEvents = [];
             },
             saveRecording: function() {
-                Server.addCmd(username, savedEvents, UI.update});
+                Server.addCmd(username, savedEvents, UI.update);
             }
         };
     })();
 
+    var Speech = (function() {
+      var recognition;
+      var recognizing;
+
+      var init = function() {
+        recognition = new webkitSpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+
+        recognizing = false;
+
+        recognition.onstart = function() {
+          console.log("onstart");
+          recognizing = true;
+        }
+
+        recognition.onresult = function(event) {
+          var transcript = '';
+          if (typeof(event.results) == 'undefined') {
+            recognition.onend = null;
+            recognition.stop();
+            return;
+          }
+          for (var i = event.resultIndex; i < event.results.length; ++i) {
+            transcript += event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+              transcript = transcript.trim();
+              console.log(transcript);
+
+              if (CmdCenter.isRecording()) {
+                // done recording
+                key = CmdCenter.matchKey(transcript);
+                if (key == "done") {
+                  CmdCenter.stopRecording();
+                  CmdCenter.saveRecording();
+                }
+                return;
+              }
+
+              // begins with hello echo, "record" or command
+              if (transcript.indexOf("hello echo") >= 0) {
+                command = transcript.slice(transcript.indexOf("hello echo") + 11);
+                key = CmdCenter.matchKey(command);
+                if (key == "record") {
+                  CmdCenter.startRecording();
+                } else {
+                  CmdCenter.exeCmd(key);
+                }
+              }
+
+            }
+          }
+        }
+
+        recognition.onerror = function(event) {
+          console.log("onerror", event);
+        }
+
+        recognition.onend = function() {
+          console.log("onend");
+          recognizing = false;
+        }
+      };
+
+      var start = function() {
+        recognition.start();
+      };
+
+      var stop = function() {
+        recognition.stop();
+      };
+
+      var isRecognizing = function() {
+        return recognizing;
+      };
+
+      return {
+        init          : init,
+        start         : start,
+        stop          : stop,
+        isRecognizing : isRecognizing
+      };
+
+    })();
+
     console.log('Ekho started.');
+
+    // start the speech recognition engine
+    if (!('webkitSpeechRecognition' in window)) {
+      console.log("speech api not supported");
+    } else {
+      Speech.init();
+
+      //function startButton(event) {
+        //if (recognizing) {
+          //recognition.stop();
+        //}
+        //else {
+          //recognition.start();
+        //}
+      //}
+
+      setInterval(function() {
+        if (!Speech.isRecognizing()) {
+          Speech.start();
+        }
+      }, 2000);
+
+    }
 
     window.addEventListener('click', function(e) {
         var $el = $(e.target);
