@@ -211,10 +211,15 @@
         recognition.stop();
       };
 
+      var isRecognizing = function() {
+        return recognizing;
+      };
+
       return {
-        init  : init,
-        start : start,
-        end   : end
+        init          : init,
+        start         : start,
+        stop          : stop,
+        isRecognizing : isRecognizing
       };
 
     })();
@@ -237,7 +242,7 @@
       //}
 
       setInterval(function() {
-        if (!recognizing) {
+        if (!Speech.isRecognizing()) {
           Speech.start();
         }
       }, 2000);
