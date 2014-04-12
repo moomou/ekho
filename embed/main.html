@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+  </head>
+  <body>
+    <div class="container-narrow">
+      <div class="masthead" style="height: 100px; display: block;">
+        <a id="sideMenu" href="#" class="noSelect muted home-btn pull-left" style="margin-top: 37px;"> Cloverite </a>
+        <ul class="nav nav-pills pull-left" style="margin-top: 2em;">
+        </ul>
+        <a href="/signup" class="btn btn-success" style=" margin: 27px 0 0 15px; float: right;"> MOVING AWAY</a>
+        <span class="muted" style="float: right; margin: 32px 0 0 15px;"> or</span>
+      </div>
+      <div class="jumbotron" id="message">
+        <div class="item active">
+          <h1 class="muted">Manipulate information like never before.</h1>
+
+          <input type='text' placeholder='Type to search something'>
+          <input type="checkbox" name="vehicle" value="Car">I have a car
+
+          <br>
+
+          <form action="">
+            <input type="radio" name="sex" value="male">Male<br>
+            <input type="radio" name="sex" value="female">Female
+          </form>
+
+          <h3 style="color: silver;">The personal API for organizing and sharing information.</h3>
+          <p class="lead"><button class="btn btn-large btn-success">See How It Works</button></p>
+          <form class="hidden" method="GET" id="searchForm" action="{% url 'default.views.RedirectHandler' %}">
+            <div class="input-append">
+              <input autofocus id="searchInput" name="q" class="span5" type="text" placeholder="Try #ericCartman">
+              <button id="searchBtn" class="btn btn-success" type="button" ><i class="fa fa-search"> <span class="visible-desktop">Search </span></i></button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="jumbotron" id="feature">
+        <div class="row-fluid">
+          <div class="span4">
+            <h3> Organize and build information the way you need.</h3>
+            <p> Cloverite makes it easy to aggregate disparate information from different sources together, providing context and make understanding fast.</p>
+          </div>
+          <div class="span4">
+            <h3> Find your data instantly and discover new things.</h3>
+            <p> All of your data one or two hashtags anyway. Subscribe to new content source from your friends to discover and share new things.</p>
+          </div>
+          <div class="span4">
+            <h3> Create and collaborate on content. </h3>
+            <p> Share your data with the world and build open information block together.</p>
+          </div>
+        </div>
+        <hr>
+      </div>
+    </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
