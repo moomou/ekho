@@ -23,9 +23,7 @@
         return path;
     };
 
-    var allEvents = [],
-        recording = false,
-        username = null,
+    var username = null,
         fuzzySet = FuzzySet(),
         SERVER_URL = 'http://localhost:3000';
 
@@ -48,7 +46,7 @@
             return SERVER_URL + "/" +
                     username + "/" +
                     encodeURIComponent(document.URL) +
-                    "/commands" + 
+                    "/commands" +
                     (cmdKey ? "/" + cmdKey : "");
         }
         function ajaxCall(url, method, handler, cb) {
@@ -80,7 +78,7 @@
                 }, cb);
             },
             addCmd: function(cmdName, events, cb) {
-                ajaxCall(getServerUrl, 'POST', function(data) {
+                ajaxCall(getServerUrl(), 'POST', function(data) {
                     localStorage.setItem(key, JSON.stringify(events));
                     fuzzySet.add(key);
                 }, cb);
@@ -106,10 +104,13 @@
             }
         }
 
-        var savedEvents = [];
+        var savedEvents = [],
+            allEvents = [],
+            recording = false;
 
         return {
-            subscribe: function() {
+            isRecording: function() {
+                return recording;
             },
             exeCmd: function(key) {
                 var cmdKeys = fuzzySet.get(key);
@@ -139,7 +140,7 @@
     window.addEventListener('click', function(e) {
         var $el = $(e.target);
         console.log('Clicked: ' + $el.getPath());
-        if (recording) {
+        if (CmdCenter.isRecording()) {
             allEvents.push({
                 event: 'click',
                 selector: $el.getPath(),
@@ -152,7 +153,7 @@
         var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
         if (charCode) {
             console.log('Character typed: ' + String.fromCharCode(charCode));
-            if (recording) {
+            if (CmdCenter.isRecording()) {
                 allEvents.push({
                     event: 'keypress',
                     selector: $el.getPath(),
@@ -161,5 +162,4 @@
             }
         }
     };
-
 })(this);
