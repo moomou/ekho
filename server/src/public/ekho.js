@@ -25,7 +25,7 @@
 
     var username   = null,
         fuzzySet   = FuzzySet(),
-        SERVER_URL = 'http://localhost:3000';
+        SERVER_URL = 'http://54.186.177.249';
 
     var UI = (function() {
         function update(state, msg) {
@@ -83,7 +83,8 @@
               activate();
             },
             openInfo: openInfo,
-            closeInfo: closeInfo
+            closeInfo: closeInfo,
+            activate: activate
         };
     })();
 
@@ -102,16 +103,19 @@
                 url: getServerUrl(),
                 data: data
             })
-            .done(function(data) {
-                if (data.success) {
+            .done(function(result) {
+                result = JSON.parse(result);
+                //console.log('result: ', JSON.parse(result);
+                //console.log('result.success: ', result.success);
+                if (result.success) {
                     console.log('Cmd succeeded');
-                    handler(data.payload);
+                    handler(result.payload);
                 } else {
                     console.log('Cmd get failed.');
-                    console.log(data);
+                    console.log(result);
                 }
                 if (cb) {
-                    cb(data.success, '??');
+                    cb(result.success, '??');
                 }
             }); // Need network failure
         }
@@ -127,7 +131,6 @@
                 }, cb);
             },
             addCmd: function(cmdName, events, cb) {
-                debugger;
                 ajaxCall(getServerUrl(), 'POST', events, function(data) {
                     localStorage.setItem(events.key, JSON.stringify(events));
                     fuzzySet.add(events.key);
@@ -175,6 +178,7 @@
                 return null;
             },
             exeCmd: function(key) {
+                UI.activate();
                 var cmd = JSON.parse(localStorage.getItem(key));
                 if (cmd && cmd.events) {
                     cmd.events.forEach(function(ev) {
@@ -183,6 +187,7 @@
                 }
             },
             startRecording: function() {
+                UI.activate();
                 recording = true;
                 console.log("start recording");
             },
@@ -210,7 +215,6 @@
       var init = function() {
         fuzzySet.add("record");
         fuzzySet.add("finish");
-        fuzzySet.add("testing");
 
         recognition = new webkitSpeechRecognition();
         recognition.continuous = true;
@@ -227,6 +231,7 @@
         recognition.onresult = function(event) {
           var transcript = '',
               parseCmd = function(command) {
+                console.log("command: ", command);
                 var key = CmdCenter.matchKey(command);
                 console.log("key: ", key);
                 if (key == "record") {
@@ -256,7 +261,8 @@
                 console.log("is recording: ", key);
                 if (key == "finish") {
                   CmdCenter.stopRecording();
-                  UI.openInfo('Enter command name');
+                  UI.updateAttention('Enter command');
+                  UI.openInfo('Enter command name...');
                   $('#button-input').on('click', function(e) {
                     e.preventDefault();
                     commandName = $('#info-input').val();
@@ -270,14 +276,16 @@
               }
 
               // begins with hello echo, "record" or command
-              if (transcript.indexOf("hello world") >= 0) {
-                command = transcript.slice(transcript.indexOf("hello world") + 12);
+              if (transcript.indexOf("hello echo") >= 0) {
+                command = transcript.slice(transcript.indexOf("hello echo") + 12);
                 if (command == "") {
+                  UI.activate();
                   activated = true;
                 } else {
                     parseCmd(command);
                 }
-              } else if (transcript.indexOf("hello world") >= 0) {
+              } else if (transcript.indexOf("hello echo") >= 0) {
+                UI.activate();
                 activated = true;
               } else if (activated && transcript) {
                 parseCmd(transcript.trim());
@@ -321,13 +329,14 @@
 
     console.log('Ekho started.');
 
-    UI.openInfo('Enter username');
+    UI.openInfo('Enter username...');
     $('#button-input').on('click', function(e) {
       e.preventDefault();
       username = $('#info-input').val();
       console.log(username);
       UI.closeInfo();
       Server.getCmds(function() {
+        console.log(fuzzySet.values());
         $('#button-input').unbind('click');
       });
     });

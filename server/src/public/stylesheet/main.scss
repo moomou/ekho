@@ -10,9 +10,9 @@
   $search-active-bg           : #900;
   $search-active-border-color : #d00;
 
-  $ready-color : green;
-  $error-color : red;
-  $attention-color : yellow;
+  $ready-color : #00b454;
+  $error-color : #ff5050;
+  $attention-color : #ffad33;
 
   /*-------------------------------------*/
   form#search {
@@ -62,10 +62,15 @@
     text-indent: $search-size;
     text-shadow: 0 1px 0 rgba(0,0,0,.4);
     /*background: $search-normal-bg url() no-repeat 0 0;*/
-    background-color: rgba(0,0,0,0.3);
+    background-color: rgba(0,0,0,0.5);
     position: absolute;
     transition: all .4s ease;
     right: -28px;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
+  }
+
+  #info-input::-webkit-input-placeholder {
+    color: #ccc;
   }
 
   #info-input.expanded {

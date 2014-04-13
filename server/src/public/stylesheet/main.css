@@ -42,27 +42,30 @@
     text-indent: 28px;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
     /*background: $search-normal-bg url() no-repeat 0 0;*/
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.5);
     position: absolute;
     transition: all .4s ease;
-    right: -28px; }
+    right: -28px;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75); }
+  #ekho-container #info-input::-webkit-input-placeholder {
+    color: #ccc; }
   #ekho-container #info-input.expanded {
     width: 250px; }
   #ekho-container #info-input.ready {
-    border: 2px solid green; }
+    border: 2px solid #00b454; }
   #ekho-container .effect-copy.ready,
   #ekho-container #button-input.ready {
-    background: green url() no-repeat 0 0; }
+    background: #00b454 url() no-repeat 0 0; }
   #ekho-container #info-input.attention {
-    border: 2px solid yellow; }
+    border: 2px solid #ffad33; }
   #ekho-container .effect-copy.attention,
   #ekho-container #button-input.attention {
-    background: yellow url() no-repeat 0 0; }
+    background: #ffad33 url() no-repeat 0 0; }
   #ekho-container #info-input.error {
-    border: 2px solid red; }
+    border: 2px solid #ff5050; }
   #ekho-container .effect-copy.error,
   #ekho-container #button-input.error {
-    background: red url() no-repeat 0 0; }
+    background: #ff5050 url() no-repeat 0 0; }
   #ekho-container .effect-copy {
     position: absolute;
     height: 22px;
