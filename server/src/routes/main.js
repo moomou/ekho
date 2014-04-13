@@ -20,7 +20,6 @@ exports.show = function(req, res, next) {
         });
 
         res.setHeader("Content-Type", "application/json");
-
         return res.end(JSON.stringify(util.getResponse(data, '200')));
     });
 };

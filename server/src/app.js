@@ -32,11 +32,6 @@ app.get('/embed/bootstrap.js', function(req, res, next) {
     return embed.bootstrap(req, res, next);
 });
 
-app.get('/embed/ekho.js', function(req, res, next) {
-    return embed.ekho(req, res, next);
-});
-
-
 app.get('/:userId/:url/commands', function(req, res, next) {
     // return all command
     return main.show(req, res, next);
