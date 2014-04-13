@@ -10,16 +10,16 @@
   width: 200px;
   height: 100px;
   text-align: center;
-  line-height: 100px;
   background-color: #fff;
-  border: 8px solid #666; }
+  border: 8px solid #666;
+  padding-top: 15px; }
 #ekho-container p.speech:before {
   content: ' ';
   position: absolute;
   width: 0;
   height: 0;
   left: 30px;
-  top: 100px;
+  top: 120px;
   border: 25px solid;
   border-color: #666 transparent transparent #666; }
 #ekho-container p.speech:after {
@@ -28,13 +28,16 @@
   width: 0;
   height: 0;
   left: 38px;
-  top: 100px;
-  border: 15px solid;
+  top: 115px;
+  border: 18px solid;
   border-color: #fff transparent transparent #fff; }
 #ekho-container input {
   margin-top: 10px;
   width: 175px;
-  height: 80px; }
+  height: 35px; }
+#ekho-container button {
+  float: right;
+  margin-right: 10px; }
 #ekho-container #ekho-ui {
   -webkit-border-radius: 100%;
   border-radius: 100%;
