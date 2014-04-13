@@ -382,5 +382,5 @@
         }
     };
 
-    new Draggabilly(document.getElementById('ekho-container'));
+    //new Draggabilly(document.getElementById('ekho-container'));
 })(this);
