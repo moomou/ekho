@@ -102,7 +102,7 @@
         function getServerUrl(cmdKey) {
             return SERVER_URL + "/" +
                     username + "/" +
-                    encodeURIComponent(document.URL) +
+                    encodeURIComponent(window.location.origin) +
                     "/commands" +
                     (cmdKey ? "/" + cmdKey : "");
         }
@@ -114,9 +114,6 @@
                 data: data
             })
             .done(function(result) {
-                //result = JSON.parse(result);
-                //console.log('result: ', JSON.parse(result);
-                //console.log('result.success: ', result.success);
                 if (result.success) {
                     console.log('Cmd succeeded');
                     handler(result.payload);
@@ -137,7 +134,6 @@
             // Gets the cmd from server and caches locally.
             getCmds: function(cb) {
                 ajaxCall(getServerUrl(), 'GET', null, function(data) {
-                debugger;
                     Object.keys(data).map(function(key) {
                         localStorage.setItem(key, JSON.stringify(data[key]));
                         fuzzySet.add(key);
