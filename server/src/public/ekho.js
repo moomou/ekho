@@ -49,11 +49,20 @@
 
         function activate() {
           console.log('activated')
-          $('.effect-copy').css('transition', 'all 0.3s ease-in');
+          $('.effect-copy').css('transition', 'all 0.5s ease-in');
           $('.effect-copy').addClass('activated');
           setTimeout(function() {
             $('.effect-copy').css('transition', 'none');
             $('.effect-copy').removeClass('activated');
+          }, 2000);
+        }
+
+        function startPulse() {
+          setInterval(function() {
+            $('.effect-copy').addClass('pulse');
+            setTimeout(function() {
+              $('.effect-copy').removeClass('pulse');
+            }, 1000);
           }, 2000);
         }
 
@@ -84,7 +93,8 @@
             },
             openInfo: openInfo,
             closeInfo: closeInfo,
-            activate: activate
+            activate: activate,
+            startPulse: startPulse
         };
     })();
 
@@ -104,6 +114,7 @@
                 data: data
             })
             .done(function(result) {
+                //result = JSON.parse(result);
                 //console.log('result: ', JSON.parse(result);
                 //console.log('result.success: ', result.success);
                 if (result.success) {
@@ -116,6 +127,9 @@
                 if (cb) {
                     cb(result.success, '??');
                 }
+            })
+            .error(function() {
+              UI.updateError('network error');
             }); // Need network failure
         }
 
@@ -123,6 +137,7 @@
             // Gets the cmd from server and caches locally.
             getCmds: function(cb) {
                 ajaxCall(getServerUrl(), 'GET', null, function(data) {
+                debugger;
                     Object.keys(data).map(function(key) {
                         localStorage.setItem(key, JSON.stringify(data[key]));
                         fuzzySet.add(key);
@@ -130,6 +145,7 @@
                 }, cb);
             },
             addCmd: function(cmdName, events, cb) {
+                console.log(getServerUrl());
                 ajaxCall(getServerUrl(), 'POST', events, function(data) {
                     localStorage.setItem(events.key, JSON.stringify(events));
                     fuzzySet.add(events.key);
@@ -266,6 +282,7 @@
                     e.preventDefault();
                     commandName = $('#info-input').val();
                     console.log(commandName);
+                    UI.updateOK('Command saved');
                     UI.closeInfo();
                     CmdCenter.saveRecording(commandName);
                     activated = 'finish';
@@ -276,7 +293,8 @@
 
               // begins with hello echo, "record" or command
               if (transcript.indexOf("hello echo") >= 0) {
-                command = transcript.slice(transcript.indexOf("hello echo") + 12);
+                console.log('inside &*&*(^(');
+                command = transcript.slice(transcript.indexOf("hello echo") + 11);
                 if (command == "") {
                   UI.activate();
                   activated = true;
@@ -332,7 +350,7 @@
     $('#button-input').on('click', function(e) {
       e.preventDefault();
       username = $('#info-input').val();
-      console.log(username);
+      console.log("print username", username);
       UI.closeInfo();
       Server.getCmds(function() {
         console.log(fuzzySet.values());

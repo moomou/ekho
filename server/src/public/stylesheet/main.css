@@ -3,7 +3,7 @@
   /*-------------------------------------*/
   /*-------------------------------------*/ }
   #ekho-container form#search {
-    position: absolute;
+    position: fixed;
     right: 38px;
     top: 10px;
     z-index: 10; }
@@ -72,7 +72,7 @@
     width: 22px;
     left: 3px;
     top: 3px;
-    transition: all 0.3s ease-in;
+    transition: all 0.5s ease-in;
     border: 0px;
     border-radius: 22px;
     z-index: 1; }
