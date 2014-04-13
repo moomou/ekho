@@ -25,7 +25,7 @@
 
     var username   = null,
         fuzzySet   = FuzzySet(),
-        SERVER_URL = 'http://54.186.177.249';
+        SERVER_URL = 'http://localhost:3000';
 
     var UI = (function() {
         function update(state, msg) {
@@ -104,7 +104,6 @@
                 data: data
             })
             .done(function(result) {
-                result = JSON.parse(result);
                 //console.log('result: ', JSON.parse(result);
                 //console.log('result.success: ', result.success);
                 if (result.success) {

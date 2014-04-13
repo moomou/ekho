@@ -2,7 +2,7 @@ var util = require('./util'),
     redis = require('../db').redis;
 
 exports.show = function(req, res, next) {
-    var user = req.params.user,
+    var user = req.params.userId,
         url = req.params.url,
         cmdKey = util.getRedisKey(user, url);
 
@@ -25,7 +25,7 @@ exports.show = function(req, res, next) {
 };
 
 exports.add = function(req, res, next) {
-    var user = req.params.user,
+    var user = req.params.userId,
         url = req.params.url,
         cmdKey = util.getRedisKey(user, url),
         newCmd = req.body;
@@ -42,7 +42,7 @@ exports.add = function(req, res, next) {
 };
 
 exports.remove = function(req, res, next) {
-    var user = req.params.user,
+    var user = req.params.userId,
         url = req.params.url,
         cmdKey = util.getRedisKey(user, url),
         cmdId = req.params.cmdId;
