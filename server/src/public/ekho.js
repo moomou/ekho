@@ -372,4 +372,6 @@
             }
         }
     };
+
+    new Draggabilly(document.getElementById('ekho-container'));
 })(this);
