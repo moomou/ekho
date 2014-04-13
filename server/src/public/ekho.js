@@ -47,6 +47,16 @@
           $('.effect-copy').removeClass('error ready attention');
         }
 
+        function activate() {
+          console.log('activated')
+          $('.effect-copy').css('transition', 'all 0.3s ease-in');
+          $('.effect-copy').addClass('activated');
+          setTimeout(function() {
+            $('.effect-copy').css('transition', 'none');
+            $('.effect-copy').removeClass('activated');
+          }, 2000);
+        }
+
 
         return {
             update: function(state, msg) {
@@ -56,18 +66,21 @@
               $('#info-input').addClass('ready');
               $('#button-input').addClass('ready');
               $('.effect-copy').addClass('ready');
+              activate();
             },
             updateFail: function(msg) {
               clearClasses();
               $('#info-input').addClass('error');
               $('#button-input').addClass('error');
               $('.effect-copy').addClass('error');
+              activate();
             },
             updateAttention: function(msg) {
               clearClasses();
               $('#info-input').addClass('attention');
               $('#button-input').addClass('attention');
               $('.effect-copy').addClass('attention');
+              activate();
             },
             openInfo: openInfo,
             closeInfo: closeInfo

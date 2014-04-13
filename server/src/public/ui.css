@@ -48,7 +48,6 @@
     transition: all .4s ease;
     right: -28px; }
   #ekho-container #info-input.expanded {
-    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3), 0 0 2px rgba(255, 255, 255, 0.3), inset 0 0px 0px rgba(0, 0, 0, 0.3);
     width: 250px; }
   #ekho-container #info-input.ready {
     border: 2px solid green; }
@@ -76,8 +75,5 @@
     border-radius: 22px;
     z-index: 1; }
   #ekho-container .effect-copy.activated {
-    -webkit-transform: scale(2);
+    -webkit-transform: scale(3);
     opacity: 0; }
-
-body {
-  background: #292929; }

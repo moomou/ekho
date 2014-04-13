@@ -69,9 +69,6 @@
   }
 
   #info-input.expanded {
-    box-shadow: 0 2px 0 rgba(0,0,0,.3),
-                0 0 2px rgba(255,255,255,.3),
-                inset 0 0px 0px rgba(0,0,0,0.3);
     width: $search-expanded-size;
   }
 
@@ -115,12 +112,8 @@
   }
 
   .effect-copy.activated {
-    -webkit-transform: scale(2.0);
+    -webkit-transform: scale(3.0);
     opacity: 0;
   }
 
-}
-
-body {
-  background: #292929;
 }
