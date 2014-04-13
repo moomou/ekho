@@ -31,7 +31,7 @@
 
     styleTag.rel   = 'stylesheet';
     styleTag.type  = 'text/css';
-    styleTag.href  = _url + 'static/style.css';
+    styleTag.href  = _url + 'static/ui.css';
     styleTag.media = 'all';
     document.getElementsByTagName('head')[0].appendChild(styleTag);
 
@@ -46,6 +46,7 @@
     div.id        = _divId;
     div.innerHTML = _rendered;
     div.className = 'ekho-container cleanslate';
+    document.getElementsByTagName('body')[0].appendChild(div);
 
     var jqueryJS = 'http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js';
     var fuzzySetJS =  _url + 'static/fuzzyset.js';

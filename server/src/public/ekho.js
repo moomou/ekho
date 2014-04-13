@@ -23,7 +23,7 @@
         return path;
     };
 
-    var username   = "jackhxs",
+    var username   = null,
         fuzzySet   = FuzzySet(),
         SERVER_URL = 'http://localhost:3000';
 
@@ -31,15 +31,48 @@
         function update(state, msg) {
         }
 
+        function openInfo(placeholder) {
+          $('#info-input').val('');
+          $('#info-input').attr('placeholder', placeholder);
+          $('#info-input').addClass('expanded');
+        }
+
+        function closeInfo() {
+          $('#info-input').removeClass('expanded');
+        }
+
+        function clearClasses() {
+          $('#info-input').removeClass();
+          $('#button-input').removeClass();
+          $('.effect-copy').removeClass('error ready attention');
+        }
+
+
         return {
             update: function(state, msg) {
             },
             updateOK: function(msg) {
+              clearClasses();
+              $('#info-input').addClass('ready');
+              $('#button-input').addClass('ready');
+              $('.effect-copy').addClass('ready');
             },
             updateFail: function(msg) {
-            }
+              clearClasses();
+              $('#info-input').addClass('error');
+              $('#button-input').addClass('error');
+              $('.effect-copy').addClass('error');
+            },
+            updateAttention: function(msg) {
+              clearClasses();
+              $('#info-input').addClass('attention');
+              $('#button-input').addClass('attention');
+              $('.effect-copy').addClass('attention');
+            },
+            openInfo: openInfo,
+            closeInfo: closeInfo
         };
-    });
+    })();
 
     var Server = (function() {
         function getServerUrl(cmdKey) {
@@ -51,14 +84,12 @@
         }
         function ajaxCall(url, method, data, handler, cb) {
             console.log(data);
-            debugger;
             $.ajax({
                 type: method,
                 url: getServerUrl(),
                 data: data
             })
             .done(function(data) {
-                debugger;
                 if (data.success) {
                     console.log('Cmd succeeded');
                     handler(data.payload);
@@ -67,7 +98,7 @@
                     console.log(data);
                 }
                 if (cb) {
-                    cb(msg.success, '??');
+                    cb(data.success, '??');
                 }
             }); // Need network failure
         }
@@ -83,6 +114,7 @@
                 }, cb);
             },
             addCmd: function(cmdName, events, cb) {
+                debugger;
                 ajaxCall(getServerUrl(), 'POST', events, function(data) {
                     localStorage.setItem(events.key, JSON.stringify(events));
                     fuzzySet.add(events.key);
@@ -131,7 +163,7 @@
             },
             exeCmd: function(key) {
                 var cmd = JSON.parse(localStorage.getItem(key));
-                if (cmd.events) {
+                if (cmd && cmd.events) {
                     cmd.events.forEach(function(ev) {
                         replayEvent(ev);
                     });
@@ -139,6 +171,7 @@
             },
             startRecording: function() {
                 recording = true;
+                console.log("start recording");
             },
             stopRecording: function() {
                 recording = false;
@@ -146,9 +179,9 @@
                 allEvents = [];
                 console.log("stop recording");
             },
-            saveRecording: function() {
+            saveRecording: function(key) {
                 Server.addCmd(username, {
-                    key: 'testing',
+                    key: key,
                     events: savedEvents,
                 }, UI.update);
                 console.log("save recording");
@@ -162,7 +195,7 @@
 
       var activated = false;
       var init = function() {
-        fuzzySet.add("start");
+        fuzzySet.add("record");
         fuzzySet.add("finish");
         fuzzySet.add("testing");
 
@@ -174,6 +207,7 @@
 
         recognition.onstart = function() {
           console.log("onstart");
+          UI.updateOK('Ready!');
           recognizing = true;
         }
 
@@ -182,7 +216,7 @@
               parseCmd = function(command) {
                 var key = CmdCenter.matchKey(command);
                 console.log("key: ", key);
-                if (key == "start") {
+                if (key == "record") {
                   CmdCenter.startRecording();
                 } else if (key) {
                   CmdCenter.exeCmd(key);
@@ -209,8 +243,15 @@
                 console.log("is recording: ", key);
                 if (key == "finish") {
                   CmdCenter.stopRecording();
-                  CmdCenter.saveRecording();
-                  activated = 'finish';
+                  UI.openInfo('Enter command name');
+                  $('#button-input').on('click', function(e) {
+                    e.preventDefault();
+                    commandName = $('#info-input').val();
+                    console.log(commandName);
+                    UI.closeInfo();
+                    CmdCenter.saveRecording(commandName);
+                    activated = 'finish';
+                  });
                 }
                 return;
               }
@@ -234,11 +275,13 @@
 
         recognition.onerror = function(event) {
           console.log("onerror", event);
+          UI.updateFail('Failed');
         }
 
         recognition.onend = function() {
           console.log("onend");
           recognizing = false;
+          UI.updateFail('Failed');
         }
       };
 
@@ -265,6 +308,17 @@
 
     console.log('Ekho started.');
 
+    UI.openInfo('Enter username');
+    $('#button-input').on('click', function(e) {
+      e.preventDefault();
+      username = $('#info-input').val();
+      console.log(username);
+      UI.closeInfo();
+      Server.getCmds(function() {
+        $('#button-input').unbind('click');
+      });
+    });
+
     // start the speech recognition engine
     if (!('webkitSpeechRecognition' in window)) {
       console.log("speech api not supported");
@@ -272,7 +326,7 @@
       Speech.init();
 
       setInterval(function() {
-        if (!Speech.isRecognizing()) {
+        if (username != null && !Speech.isRecognizing()) {
           Speech.start();
         }
       }, 2000);

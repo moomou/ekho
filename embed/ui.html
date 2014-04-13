@@ -2,20 +2,27 @@
 <head>
   <link rel="stylesheet" type="text/css" href="../server/src/public/ui.css"></link>
   <title>UI</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js">
+  </script>
 </head>
 <body>
   <div id="ekho-container">
     <form action="#" method="post" id="search">
       <div>
         <label for="name">Text Input:</label>
-        <div id="text-field">
-          <input type="text" name="name" id="name" value="" tabindex="1" placeholder="Search..."/>
+        <div id="info-field">
+          <input type="text" name="name" id="info-input" value="" tabindex="1" placeholder="Search..."/>
+        </div>
+        <div class="effect-copy">
         </div>
         <div id="button-field">
-          <input type="submit" value="Submit" />
+          <input type="submit" id="button-input" class="hovicon effect-3 sub-a" value="Submit" />
         </div>
       </div>
     </form>
+    <!--<div class="block">-->
+      <!--<i class="hovicon effect-3 sub-a">IO</i>-->
+    <!--</div>-->
   </div>
 </body>
 </html>
