@@ -25,7 +25,7 @@
 
     var username   = null,
         fuzzySet   = FuzzySet(),
-        SERVER_URL = 'http://localhost:3000';
+        SERVER_URL = 'http://54.186.177.249';
 
     var UI = (function() {
         function update(state, msg) {
