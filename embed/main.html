@@ -27,7 +27,7 @@
           </form>
 
           <h3 style="color: silver;">The personal API for organizing and sharing information.</h3>
-          <p class="lead"><button class="btn btn-large btn-success">See How It Works</button></p>
+          <p class="lead"><button id="testBtn" class="btn btn-large btn-success">See How It Works</button></p>
           <form class="hidden" method="GET" id="searchForm" action="{% url 'default.views.RedirectHandler' %}">
             <div class="input-append">
               <input autofocus id="searchInput" name="q" class="span5" type="text" placeholder="Try #ericCartman">
@@ -55,5 +55,11 @@
       </div>
     </div>
     <script id="abc" src="http://localhost:3000/embed/bootstrap.js?scriptId=abc" async></script>
+    <script>
+      var btn = document.getElementById('testBtn');
+      btn.addEventListener('click', function(e) {
+          console.log("Still bubbling~");
+      });
+    </script>
   </body>
 </html>

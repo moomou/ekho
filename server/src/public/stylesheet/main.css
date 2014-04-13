@@ -1,0 +1,55 @@
+#ekho-container p.speech {
+  -webkit-border-radius: 30px;
+  border-radius: 30px;
+  background-clip: padding-box;
+  /* stops bg color from leaking outside the border: */
+  -webkit-box-shadow: 2px 2px 4px #888888 ;
+  -moz-box-shadow: 2px 2px 4px #888888 ;
+  box-shadow: 2px 2px 4px #888888 ;
+  position: relative;
+  width: 200px;
+  height: 100px;
+  text-align: center;
+  line-height: 100px;
+  background-color: #fff;
+  border: 8px solid #666; }
+#ekho-container p.speech:before {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 30px;
+  top: 100px;
+  border: 25px solid;
+  border-color: #666 transparent transparent #666; }
+#ekho-container p.speech:after {
+  content: ' ';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 38px;
+  top: 100px;
+  border: 15px solid;
+  border-color: #fff transparent transparent #fff; }
+#ekho-container input {
+  margin-top: 10px;
+  width: 175px;
+  height: 80px; }
+#ekho-container #ekho-ui {
+  -webkit-border-radius: 100%;
+  border-radius: 100%;
+  background-clip: padding-box;
+  /* stops bg color from leaking outside the border: */
+  -webkit-transition: background-color 0.5s ease 0s;
+  -moz-transition: background-color 0.5s ease 0s;
+  -ms-transition: background-color 0.5s ease 0s;
+  -o-transition: background-color 0.5s ease 0s;
+  transition: background-color 0.5s ease 0s;
+  -webkit-box-shadow: 0 1px 1px #ebebeb ;
+  -moz-box-shadow: 0 1px 1px #ebebeb ;
+  box-shadow: 0 1px 1px #ebebeb ;
+  background: #AEFF79;
+  width: 75px;
+  height: 75px; }
+#ekho-container #ekho-ui.error {
+  background: #e74c3c; }
