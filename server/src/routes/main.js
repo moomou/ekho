@@ -19,7 +19,9 @@ exports.show = function(req, res, next) {
             data[key] = JSON.parse(data[key]);
         });
 
-        return res.json(util.getResponse(data));
+        res.setHeader("Content-Type", "application/json");
+
+        return res.end(JSON.stringify(util.getResponse(data, '200')));
     });
 };
 
@@ -29,12 +31,14 @@ exports.add = function(req, res, next) {
         cmdKey = util.getRedisKey(user, url),
         newCmd = req.body;
 
+    console.log(newCmd);
     redis.hset(cmdKey, newCmd.key, JSON.stringify(newCmd), function(err, data) {
         if (err) {
             return res.json(util.getResponse(null, '500'));
         }
 
-        return res.json(util.getResponse(null, '201'));
+        res.setHeader("Content-Type", "application/json");
+        return res.end(JSON.stringify(util.getResponse(null, '201')));
     });
 };
 
@@ -49,6 +53,7 @@ exports.remove = function(req, res, next) {
             return res.json(util.getResponse(null, '500'));
         }
 
-        return res.json(util.getResponse(null, '204'));
+        res.setHeader("Content-Type", "application/json");
+        return res.end(JSON.stringify(util.getResponse(null, '204')));
     });
 };

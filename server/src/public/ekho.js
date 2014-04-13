@@ -49,10 +49,13 @@
                     "/commands" +
                     (cmdKey ? "/" + cmdKey : "");
         }
-        function ajaxCall(url, method, handler, cb) {
+        function ajaxCall(url, method, data, handler, cb) {
+            console.log(data);
+            debugger;
             $.ajax({
                 type: method,
                 url: getServerUrl(),
+                data: data
             })
             .done(function(data) {
                 debugger;
@@ -72,7 +75,7 @@
         return {
             // Gets the cmd from server and caches locally.
             getCmds: function(cb) {
-                ajaxCall(getServerUrl(), 'GET', function(data) {
+                ajaxCall(getServerUrl(), 'GET', null, function(data) {
                     Object.keys(data).map(function(key) {
                         localStorage.setItem(key, JSON.stringify(data[key]));
                         fuzzySet.add(key);
@@ -80,14 +83,14 @@
                 }, cb);
             },
             addCmd: function(cmdName, events, cb) {
-                ajaxCall(getServerUrl(), 'POST', function(data) {
-                    localStorage.setItem(key, JSON.stringify(events));
-                    fuzzySet.add(key);
+                ajaxCall(getServerUrl(), 'POST', events, function(data) {
+                    localStorage.setItem(events.key, JSON.stringify(events));
+                    fuzzySet.add(events.key);
                 }, cb);
             },
             delCmd: function(cmdName, cb) {
-                ajaxCall(getServerUrl(cmdName, 'DELETE', function(data) {
-                    localStorage.remove(key);
+                ajaxCall(getServerUrl(cmdName, 'DELETE', null, function(data) {
+                    localStorage.remove(cmdName);
                 }, cb));
             }
         };
@@ -101,7 +104,7 @@
                 }
                 case 'keypress': {
                     var $el = $(ev.selector);
-                    $el.val($el.val() + ev.value);
+                    $el.val($el.val() + String.fromCharCode(ev.value));
                 }
             }
         }
@@ -127,10 +130,12 @@
                 return null;
             },
             exeCmd: function(key) {
-                var events = JSON.parse(localStorage.getItem(key));
-                events.each(function(ev) {
-                    replayEvent(ev);
-                });
+                var cmd = JSON.parse(localStorage.getItem(key));
+                if (cmd.events) {
+                    cmd.events.forEach(function(ev) {
+                        replayEvent(ev);
+                    });
+                }
             },
             startRecording: function() {
                 recording = true;
@@ -142,7 +147,10 @@
                 console.log("stop recording");
             },
             saveRecording: function() {
-                Server.addCmd(username, savedEvents, UI.update);
+                Server.addCmd(username, {
+                    key: 'testing',
+                    events: savedEvents,
+                }, UI.update);
                 console.log("save recording");
             }
         };
@@ -152,9 +160,11 @@
       var recognition;
       var recognizing;
 
+      var activated = false;
       var init = function() {
-        fuzzySet.add("record");
-        fuzzySet.add("done");
+        fuzzySet.add("start");
+        fuzzySet.add("finish");
+        fuzzySet.add("testing");
 
         recognition = new webkitSpeechRecognition();
         recognition.continuous = true;
@@ -168,41 +178,56 @@
         }
 
         recognition.onresult = function(event) {
-          var transcript = '';
+          var transcript = '',
+              parseCmd = function(command) {
+                var key = CmdCenter.matchKey(command);
+                console.log("key: ", key);
+                if (key == "start") {
+                  CmdCenter.startRecording();
+                } else if (key) {
+                  CmdCenter.exeCmd(key);
+                }
+              };
+
           if (typeof(event.results) == 'undefined') {
             recognition.onend = null;
             recognition.stop();
             return;
           }
+
           for (var i = event.resultIndex; i < event.results.length; ++i) {
             transcript += event.results[i][0].transcript;
+
             if (event.results[i].isFinal) {
               transcript = transcript.trim();
+
               console.log(transcript);
 
               // done recording
               if (CmdCenter.isRecording()) {
                 key = CmdCenter.matchKey(transcript);
                 console.log("is recording: ", key);
-                if (key == "done") {
+                if (key == "finish") {
                   CmdCenter.stopRecording();
                   CmdCenter.saveRecording();
+                  activated = 'finish';
                 }
                 return;
               }
 
               // begins with hello echo, "record" or command
-              if (transcript.indexOf("hello echo") >= 0) {
-                command = transcript.slice(transcript.indexOf("hello echo") + 11);
-                key = CmdCenter.matchKey(command);
-                console.log("key: ", key);
-                if (key == "record") {
-                  CmdCenter.startRecording();
+              if (transcript.indexOf("hello world") >= 0) {
+                command = transcript.slice(transcript.indexOf("hello world") + 12);
+                if (command == "") {
+                  activated = true;
                 } else {
-                  CmdCenter.exeCmd(key);
+                    parseCmd(command);
                 }
+              } else if (transcript.indexOf("hello world") >= 0) {
+                activated = true;
+              } else if (activated && transcript) {
+                parseCmd(transcript.trim());
               }
-
             }
           }
         }
@@ -265,9 +290,10 @@
     });
 
     document.onkeypress = function(e) {
-        var $el = $(document.activeElement);
         e = e || window.event;
-        var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
+        var charCode = (typeof e.which == "number") ? e.which : e.keyCode,
+            $el = $(document.activeElement);
+
         if (charCode) {
             console.log('Character typed: ' + String.fromCharCode(charCode));
             if (CmdCenter.isRecording()) {
