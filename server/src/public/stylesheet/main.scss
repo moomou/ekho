@@ -1,55 +1,71 @@
 @import "mixins";
 
 #ekho-container {
-  p.speech {
-    @include border-radius(30px);
-    @include box-shadow(2px, 2px, 4px, #888);
-    position: relative;
-    width: 200px;
-    height: 100px;
-    text-align: center;
-    background-color: #fff;
-    border: 8px solid #666;
-    padding-top: 15px;
-  }
-  p.speech:before {
-    content: ' ';
+
+  $search-size                : 28px;
+  $search-expanded-size       : 200px;
+  $search-text-color          : #fff;
+  $search-border-color        : #900;
+  $search-normal-bg           : #800;
+  $search-active-bg           : #900;
+  $search-active-border-color : #d00;
+
+  /*-------------------------------------*/
+  form#search {
     position: absolute;
-    width: 0;
-    height: 0;
-    left: 30px;
-    top: 120px;
-    border: 25px solid;
-    border-color: #666 transparent transparent #666;
+    right: $search-size + 10px;
+    top: 10px;
   }
-  p.speech:after {
-    content: ' ';
+
+  /*-------------------------------------*/
+  #search label { display: none; }
+  #search #text-field, #search #button-field {
     position: absolute;
-    width: 0;
-    height: 0;
-    left: 38px;
-    top: 115px;
-    border: 18px solid;
-    border-color: #fff transparent transparent #fff;
   }
-  input {
-    margin-top: 10px;
-    width: 175px;
-    height: 35px;
+
+  #search #button-field input[type=submit] {
+    padding: 0;
+    margin: 0;
+    border: 0px;
+    border-radius: 22px;
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    height: 22px;
+    width: 22px;
+    outline: none;
+    color: $search-text-color;
+    font-size: 1em;
+    font-family: inconsolata, monospace;
+    text-indent: $search-size;
+    text-shadow: 0 1px 0 rgba(0,0,0,.4);
+    background: $search-normal-bg url() no-repeat 0 0;
+    transition: all .4s ease;
   }
-  button {
-    float: right;
-    margin-right: 10px;
+
+  /*-------------------------------------*/
+  #search input[type=text]{
+    padding: 0;
+    margin: 0;
+    border: 2px solid $search-border-color;
+    border-radius: $search-size;
+    height: $search-size;
+    width: $search-size;
+    outline: none;
+    color: $search-text-color;
+    font-size: 1em;
+    font-family: inconsolata, monospace;
+    text-indent: $search-size;
+    text-shadow: 0 1px 0 rgba(0,0,0,.4);
+    /*background: $search-normal-bg url() no-repeat 0 0;*/
+    transition: all .4s ease;
   }
-  #ekho-ui {
-    @include border-radius(100%);
-    @include transition(background-color, 0.5s, ease);
-    @include box-shadow(0, 1px, 1px, #ebebeb);
-    background: #AEFF79;
-    width: 75px;
-    height: 75px;
-  }
-  #ekho-ui.error {
-    background: #e74c3c;
+
+  #search input[type=text]:focus {
+    box-shadow: 0 2px 0 rgba(0,0,0,.3),
+                0 0 2px rgba(255,255,255,.3),
+                inset 0 0px 0px rgba(0,0,0,0.3);
+    background-color: $search-active-bg;
+    width: $search-expanded-size;
   }
 }

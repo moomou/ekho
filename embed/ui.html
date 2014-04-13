@@ -5,19 +5,17 @@
 </head>
 <body>
   <div id="ekho-container">
-    <div id="info-box" class="msg-box">
-      <p class="speech"></p>
-      <button>Ok</button>
-    </div>
-    <div id="input-box" class="msg-box">
-      <p class="speech">
-        Name for new command.
-        <input type="text">
-        <button id="save">Save</button>
-      </p>
-    </div>
-    <div id="ekho-ui" class="error">
-    </div>
+    <form action="#" method="post" id="search">
+      <div>
+        <label for="name">Text Input:</label>
+        <div id="text-field">
+          <input type="text" name="name" id="name" value="" tabindex="1" placeholder="Search..."/>
+        </div>
+        <div id="button-field">
+          <input type="submit" value="Submit" />
+        </div>
+      </div>
+    </form>
   </div>
 </body>
 </html>

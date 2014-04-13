@@ -1,59 +1,50 @@
 
-#ekho-container p.speech {
-  -webkit-border-radius: 30px;
-  border-radius: 30px;
-  background-clip: padding-box;
-  /* stops bg color from leaking outside the border: */
-  -webkit-box-shadow: 2px 2px 4px #888888 ;
-  -moz-box-shadow: 2px 2px 4px #888888 ;
-  box-shadow: 2px 2px 4px #888888 ;
-  position: relative;
-  width: 200px;
-  height: 100px;
-  text-align: center;
-  background-color: #fff;
-  border: 8px solid #666;
-  padding-top: 15px; }
-#ekho-container p.speech:before {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: 30px;
-  top: 120px;
-  border: 25px solid;
-  border-color: #666 transparent transparent #666; }
-#ekho-container p.speech:after {
-  content: ' ';
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: 38px;
-  top: 115px;
-  border: 18px solid;
-  border-color: #fff transparent transparent #fff; }
-#ekho-container input {
-  margin-top: 10px;
-  width: 175px;
-  height: 35px; }
-#ekho-container button {
-  float: right;
-  margin-right: 10px; }
-#ekho-container #ekho-ui {
-  -webkit-border-radius: 100%;
-  border-radius: 100%;
-  background-clip: padding-box;
-  /* stops bg color from leaking outside the border: */
-  -webkit-transition: background-color 0.5s ease 0s;
-  -moz-transition: background-color 0.5s ease 0s;
-  -ms-transition: background-color 0.5s ease 0s;
-  -o-transition: background-color 0.5s ease 0s;
-  transition: background-color 0.5s ease 0s;
-  -webkit-box-shadow: 0 1px 1px #ebebeb ;
-  -moz-box-shadow: 0 1px 1px #ebebeb ;
-  box-shadow: 0 1px 1px #ebebeb ;
-  background: #AEFF79;
-  width: 75px;
-  height: 75px; }
-#ekho-container #ekho-ui.error {
-  background: #e74c3c; }
+#ekho-container {
+  /*-------------------------------------*/
+  /*-------------------------------------*/
+  /*-------------------------------------*/ }
+  #ekho-container form#search {
+    position: absolute;
+    right: 38px;
+    top: 10px; }
+  #ekho-container #search label {
+    display: none; }
+  #ekho-container #search #text-field, #ekho-container #search #button-field {
+    position: absolute; }
+  #ekho-container #search #button-field input[type=submit] {
+    padding: 0;
+    margin: 0;
+    border: 0px;
+    border-radius: 22px;
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    height: 22px;
+    width: 22px;
+    outline: none;
+    color: white;
+    font-size: 1em;
+    font-family: inconsolata, monospace;
+    text-indent: 28px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    background: #880000 url() no-repeat 0 0;
+    transition: all .4s ease; }
+  #ekho-container #search input[type=text] {
+    padding: 0;
+    margin: 0;
+    border: 2px solid #990000;
+    border-radius: 28px;
+    height: 28px;
+    width: 28px;
+    outline: none;
+    color: white;
+    font-size: 1em;
+    font-family: inconsolata, monospace;
+    text-indent: 28px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    /*background: $search-normal-bg url() no-repeat 0 0;*/
+    transition: all .4s ease; }
+  #ekho-container #search input[type=text]:focus {
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3), 0 0 2px rgba(255, 255, 255, 0.3), inset 0 0px 0px rgba(0, 0, 0, 0.3);
+    background-color: #990000;
+    width: 200px; }
