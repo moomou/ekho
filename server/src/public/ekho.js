@@ -159,7 +159,12 @@
         function replayEvent(ev) {
             switch (ev.event) {
                 case 'click': {
-                    $(ev.selector).click();
+                    var $el = $(ev.selector);
+                    if ($el[0].click) {
+                        $el[0].click();
+                    } else {
+                       $el.click();
+                    }
                 }
                 case 'keypress': {
                     var $el = $(ev.selector);
