@@ -25,7 +25,7 @@
 
     var username   = null,
         fuzzySet   = FuzzySet(),
-        SERVER_URL = 'http://54.186.177.249';
+        SERVER_URL = 'https://ekho.io';
 
     var UI = (function() {
         function update(state, msg) {
