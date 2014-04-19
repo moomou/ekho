@@ -12,8 +12,6 @@ app.set('port', process.env.PORT || 3000);
 app.use(json());
 app.use(bodyParser());
 
-app.use('/static', express.static(__dirname + '/public'));
-
 var addCORSHeaders = function(req, res, next) {
     res.header("Content-Type", "application/json");
     res.header('Access-Control-Allow-Origin',
@@ -27,6 +25,8 @@ var addCORSHeaders = function(req, res, next) {
 };
 
 app.all('*', addCORSHeaders);
+
+app.use('/static', express.static(__dirname + '/public'));
 
 app.get('/embed/bootstrap.js', function(req, res, next) {
     return embed.bootstrap(req, res, next);
