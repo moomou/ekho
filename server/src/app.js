@@ -13,7 +13,6 @@ app.use(json());
 app.use(bodyParser());
 
 var addCORSHeaders = function(req, res, next) {
-    res.header("Content-Type", "application/json");
     res.header('Access-Control-Allow-Origin',
         req.headers.origin || req.headers.host);
     res.header('Access-Control-Allow-Methods',
