@@ -6,7 +6,7 @@
     position: fixed;
     right: 38px;
     top: 10px;
-    z-index: 10; }
+    z-index: 999999; }
   #ekho-container #search label {
     display: none; }
   #ekho-container #info-field, #ekho-container #button-field {
@@ -28,7 +28,7 @@
     text-indent: 28px;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
     transition: all .4s ease;
-    z-index: 10; }
+    z-index: 99999; }
   #ekho-container #info-input {
     padding: 0;
     margin: 0;
@@ -75,7 +75,7 @@
     transition: all 0.5s ease-in;
     border: 0px;
     border-radius: 22px;
-    z-index: 1; }
+    z-index: 99999; }
   #ekho-container .effect-copy.activated {
     -webkit-transform: scale(3);
     opacity: 0; }

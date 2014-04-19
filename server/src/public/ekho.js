@@ -23,14 +23,11 @@
         return path;
     };
 
-    var username   = null,
-        fuzzySet   = FuzzySet(),
-        SERVER_URL = 'https://ekho.io';
+    var SERVER_URL = 'https://ekho.io',
+        username   = localStorage.getItem('ekho:profile') || null;
+        fuzzySet   = FuzzySet();
 
     var UI = (function() {
-        function update(state, msg) {
-        }
-
         function openInfo(placeholder) {
           $('#info-input').val('');
           $('#info-input').attr('placeholder', placeholder);
@@ -48,7 +45,7 @@
         }
 
         function activate() {
-          console.log('activated')
+          console.log('activated');
           $('.effect-copy').css('transition', 'all 0.5s ease-in');
           $('.effect-copy').addClass('activated');
           setTimeout(function() {
@@ -68,8 +65,6 @@
 
 
         return {
-            update: function(state, msg) {
-            },
             updateOK: function(msg) {
               clearClasses();
               $('#info-input').addClass('ready');
@@ -127,7 +122,7 @@
             })
             .error(function() {
               UI.updateError('network error');
-            }); // Need network failure
+            });
         }
 
         return {
@@ -157,17 +152,18 @@
 
     var CmdCenter = (function() {
         function replayEvent(ev) {
+            var $el = $(ev.selector);
+
             switch (ev.event) {
                 case 'click': {
-                    var $el = $(ev.selector);
                     if ($el[0].click) {
                         $el[0].click();
                     } else {
                        $el.click();
                     }
+                    break;
                 }
                 case 'keypress': {
-                    var $el = $(ev.selector);
                     $el.val($el.val() + String.fromCharCode(ev.value));
                 }
             }
@@ -227,7 +223,7 @@
       var recognition;
       var recognizing;
 
-      var activated = false;
+      var activated = localStorage.get('ekho:preactivate');
       var init = function() {
         fuzzySet.add("record");
         fuzzySet.add("finish");
@@ -242,7 +238,7 @@
           console.log("onstart");
           UI.updateOK('Ready!');
           recognizing = true;
-        }
+        };
 
         recognition.onresult = function(event) {
           var transcript = '',
@@ -250,14 +246,22 @@
                 console.log("command: ", command);
                 var key = CmdCenter.matchKey(command);
                 console.log("key: ", key);
-                if (key == "record") {
+                if (key === "record") {
                   CmdCenter.startRecording();
                 } else if (key) {
                   CmdCenter.exeCmd(key);
                 }
               };
 
-          if (typeof(event.results) == 'undefined') {
+          $('#button-input').on('click', function(e) {
+              e.preventDefault();
+              commandName = $('#info-input').val();
+              UI.updateOK('Command saved');
+              UI.closeInfo();
+              CmdCenter.saveRecording(commandName);
+          });
+
+          if (typeof(event.results) === 'undefined') {
             recognition.onend = null;
             recognition.stop();
             return;
@@ -268,60 +272,51 @@
 
             if (event.results[i].isFinal) {
               transcript = transcript.trim();
-
               console.log(transcript);
 
               // done recording
               if (CmdCenter.isRecording()) {
                 key = CmdCenter.matchKey(transcript);
                 console.log("is recording: ", key);
-                if (key == "finish") {
+
+                if (key === "finish") {
                   CmdCenter.stopRecording();
                   UI.updateAttention('Enter command');
                   UI.openInfo('Enter command name...');
-                  $('#button-input').on('click', function(e) {
-                    e.preventDefault();
-                    commandName = $('#info-input').val();
-                    console.log(commandName);
-                    UI.updateOK('Command saved');
-                    UI.closeInfo();
-                    CmdCenter.saveRecording(commandName);
-                    activated = 'finish';
-                  });
                 }
                 return;
               }
 
               // begins with hello echo, "record" or command
               if (transcript.indexOf("hello echo") >= 0) {
-                console.log('inside &*&*(^(');
-                command = transcript.slice(transcript.indexOf("hello echo") + 11);
-                if (command == "") {
+                  console.log('Ekho listening...');
+                  var command = transcript.slice(transcript.indexOf("hello echo") + 11);
+                  if (command === "") {
+                      UI.activate();
+                      activated = true;
+                  } else {
+                      parseCmd(command);
+                  }
+              } else if (transcript.indexOf("hello echo") >= 0) {
                   UI.activate();
                   activated = true;
-                } else {
-                    parseCmd(command);
-                }
-              } else if (transcript.indexOf("hello echo") >= 0) {
-                UI.activate();
-                activated = true;
               } else if (activated && transcript) {
-                parseCmd(transcript.trim());
+                  parseCmd(transcript.trim());
               }
             }
           }
-        }
+        };
 
         recognition.onerror = function(event) {
           console.log("onerror", event);
           UI.updateFail('Failed');
-        }
+        };
 
         recognition.onend = function() {
           console.log("onend");
           recognizing = false;
           UI.updateFail('Failed');
-        }
+        };
       };
 
       var start = function() {
@@ -345,19 +340,30 @@
 
     })();
 
+    // App start
+    
     console.log('Ekho started.');
 
-    UI.openInfo('Enter username...');
-    $('#button-input').on('click', function(e) {
-      e.preventDefault();
-      username = $('#info-input').val();
-      console.log("print username", username);
-      UI.closeInfo();
-      Server.getCmds(function() {
-        console.log(fuzzySet.values());
-        $('#button-input').unbind('click');
-      });
-    });
+    if (username === null) {
+        UI.openInfo('Enter username...');
+        $('#button-input').on('click', function(e) {
+            e.preventDefault();
+            username = $('#info-input').val();
+            console.log("print username", username);
+
+            UI.closeInfo();
+
+            // load user saved commands
+            Server.getCmds(function() {
+                $('#button-input').unbind('click');
+            });
+        });
+    } else {
+        UI.closeInfo();
+        Server.getCmds(function() {
+            $('#button-input').unbind('click');
+        });
+    }
 
     // start the speech recognition engine
     if (!('webkitSpeechRecognition' in window)) {
@@ -366,15 +372,17 @@
       Speech.init();
 
       setInterval(function() {
-        if (username != null && !Speech.isRecognizing()) {
+        if (username !== null && !Speech.isRecognizing()) {
           Speech.start();
         }
       }, 2000);
     }
 
+    // Catching click event
     window.addEventListener('click', function(e) {
         var $el = $(e.target);
         console.log('Clicked: ' + $el.getPath());
+
         if (CmdCenter.isRecording()) {
             CmdCenter.addEvent({
                 event: 'click',
@@ -383,6 +391,7 @@
         }
     });
 
+    // Catching keyboard event
     document.onkeypress = function(e) {
         e = e || window.event;
         var charCode = (typeof e.which == "number") ? e.which : e.keyCode,
@@ -399,6 +408,4 @@
             }
         }
     };
-
-    //new Draggabilly(document.getElementById('ekho-container'));
 })(this);

@@ -21,14 +21,15 @@
       }
     }
 
-    var _scripTagId = '{{SCRIPT_ID}}',
-        _url = '{{SERVER_URL}}',
+    var _url = 'https://ekho.io/',
+        _scripTagId = '{{SCRIPT_ID}}',
         _divId = '{{DIV_ID}}',
         _rendered = '{{{RENDERED}}}',
         _containerId = '{{CONTAINER_ID}}',
         styleTag = document.createElement('link');
 
-    localStorage.setItem('ekho::ui', '{{ENABLE_UI}}');
+    localStorage.setItem('ekho::preactivate', {{PREACTIVATED}});
+    localStorage.setItem('ekho::profile', '{{DEFAULT_PROFILE}}');
 
     styleTag.rel   = 'stylesheet';
     styleTag.type  = 'text/css';
@@ -36,17 +37,10 @@
     styleTag.media = 'all';
     document.getElementsByTagName('head')[0].appendChild(styleTag);
 
-    styleTag       = document.createElement('link');
-    styleTag.rel   = 'stylesheet';
-    styleTag.type  = 'text/css';
-    styleTag.href  = _url + 'static/cleanslate.css';
-    styleTag.media = 'all';
-    document.getElementsByTagName('head')[0].appendChild(styleTag);
-
     var div       = document.createElement('div');
     div.id        = _divId;
     div.innerHTML = _rendered;
-    div.className = 'ekho-container cleanslate';
+    div.className = 'ekho-container';
 
     if (_containerId != '') {
       document.getElementById(_containerId).appendChild(div);
@@ -54,14 +48,12 @@
       document.getElementsByTagName('body')[0].appendChild(div);
     }
 
-    var jqueryJS = 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js';
-    var fuzzySetJS =  _url + 'static/fuzzyset.js';
-    var dragJS =  _url + 'static/draggabilly.pkgd.min.js';
-    var ekhoJS = _url + 'static/ekho.js';
+    var jqueryJS   = 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js',
+        fuzzySetJS = _url + 'static/fuzzyset.js',
+        ekhoJS     = _url + 'static/ekho.js';
 
     var fuzzySetLoaded = typeof FuzzySet !== 'undefined',
         jQueryLoaded = typeof jQuery !== 'undefined',
-        draggabillyLoaded = typeof Draggabilly !== 'undefined',
         loadOrder = [];
 
     if (!jQueryLoaded) {
@@ -69,9 +61,6 @@
     }
     if (!fuzzySetLoaded) {
       loadOrder.push(fuzzySetJS);
-    }
-    if (!draggabillyLoaded) {
-      loadOrder.push(dragJS);
     }
     loadOrder.push(ekhoJS);
 
