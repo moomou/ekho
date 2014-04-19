@@ -12,19 +12,22 @@
   $ready-color : #00b454;
   $error-color : #ff5050;
   $attention-color : #ffad33;
+  $zindex: 99999;
+
+  z-index: $zindex;
 
   /*-------------------------------------*/
   form#search {
     position: fixed;
     right: $search-size + 10px;
     top: 10px;
-    z-index: 999999;
   }
 
   /*-------------------------------------*/
   #search label { display: none; }
   #info-field, #button-field {
     position: absolute;
+    z-index: $zindex + 2;
   }
 
   #button-input {
@@ -44,7 +47,6 @@
     text-indent: $search-size;
     text-shadow: 0 1px 0 rgba(0,0,0,.4);
     transition: all .4s ease;
-    z-index: 99999;
   }
 
   /*-------------------------------------*/
@@ -60,12 +62,12 @@
     font-family: inconsolata, monospace;
     text-indent: $search-size;
     text-shadow: 0 1px 0 rgba(0,0,0,.4);
-    /*background: $search-normal-bg url() no-repeat 0 0;*/
     background-color: rgba(0,0,0,0.5);
     position: absolute;
     transition: all .4s ease;
     right: -28px;
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
+    z-index: $zindex + 1;
   }
 
   #info-input::-webkit-input-placeholder {
@@ -112,7 +114,6 @@
     transition: all 0.5s ease-in;
     border: 0px;
     border-radius: 22px;
-    z-index: 99999;
   }
 
   .effect-copy.activated {

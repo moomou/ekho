@@ -42,7 +42,7 @@
     div.innerHTML = _rendered;
     div.className = 'ekho-container';
 
-    if (_containerId != '') {
+    if (_containerId != ''&& document.getElementById(_containerId)) {
       document.getElementById(_containerId).appendChild(div);
     } else {
       document.getElementsByTagName('body')[0].appendChild(div);

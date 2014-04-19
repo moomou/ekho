@@ -1,16 +1,17 @@
 #ekho-container {
+  z-index: 99999;
   /*-------------------------------------*/
   /*-------------------------------------*/
   /*-------------------------------------*/ }
   #ekho-container form#search {
     position: fixed;
     right: 38px;
-    top: 10px;
-    z-index: 999999; }
+    top: 10px; }
   #ekho-container #search label {
     display: none; }
   #ekho-container #info-field, #ekho-container #button-field {
-    position: absolute; }
+    position: absolute;
+    z-index: 100001; }
   #ekho-container #button-input {
     padding: 0;
     margin: 0;
@@ -27,8 +28,7 @@
     font-family: inconsolata, monospace;
     text-indent: 28px;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
-    transition: all .4s ease;
-    z-index: 99999; }
+    transition: all .4s ease; }
   #ekho-container #info-input {
     padding: 0;
     margin: 0;
@@ -41,12 +41,12 @@
     font-family: inconsolata, monospace;
     text-indent: 28px;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
-    /*background: $search-normal-bg url() no-repeat 0 0;*/
     background-color: rgba(0, 0, 0, 0.5);
     position: absolute;
     transition: all .4s ease;
     right: -28px;
-    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75); }
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
+    z-index: 100000; }
   #ekho-container #info-input::-webkit-input-placeholder {
     color: #ccc; }
   #ekho-container #info-input.expanded {
@@ -74,8 +74,7 @@
     top: 3px;
     transition: all 0.5s ease-in;
     border: 0px;
-    border-radius: 22px;
-    z-index: 99999; }
+    border-radius: 22px; }
   #ekho-container .effect-copy.activated {
     -webkit-transform: scale(3);
     opacity: 0; }

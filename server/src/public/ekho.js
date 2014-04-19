@@ -24,7 +24,7 @@
     };
 
     var SERVER_URL = 'https://ekho.io',
-        username   = localStorage.getItem('ekho:profile') || null;
+        username   = localStorage.getItem('ekho:profile') || null,
         fuzzySet   = FuzzySet();
 
     var UI = (function() {
@@ -223,7 +223,7 @@
       var recognition;
       var recognizing;
 
-      var activated = localStorage.get('ekho:preactivate');
+      var activated = localStorage.getItem('ekho:preactivate');
       var init = function() {
         fuzzySet.add("record");
         fuzzySet.add("finish");
@@ -348,9 +348,8 @@
         UI.openInfo('Enter username...');
         $('#button-input').on('click', function(e) {
             e.preventDefault();
-            username = $('#info-input').val();
+            username = $('#info-input').val() || '__default';
             console.log("print username", username);
-
             UI.closeInfo();
 
             // load user saved commands
