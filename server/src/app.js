@@ -8,7 +8,7 @@ var express    = require('express'),
     app        = express();
 
 app.version = '/v0';
-app.set('port', process.env.PORT || 80);
+app.set('port', process.env.PORT || 3000);
 app.use(json());
 app.use(bodyParser());
 

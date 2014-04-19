@@ -21,6 +21,7 @@
     position: fixed;
     right: $search-size + 10px;
     top: 10px;
+    $zindex: 99999;
   }
 
   /*-------------------------------------*/
