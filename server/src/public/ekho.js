@@ -97,7 +97,7 @@
         function getServerUrl(cmdKey) {
             return SERVER_URL + "/" +
                     username + "/" +
-                    encodeURIComponent(window.location.origin) +
+                    encodeURIComponent(window.location.hostname + window.location.pathname) +
                     "/commands" +
                     (cmdKey ? "/" + cmdKey : "");
         }
@@ -223,7 +223,7 @@
       var recognition;
       var recognizing;
 
-      var activated = localStorage.getItem('ekho::preactivate');
+      var activated = true; // localStorage.getItem('ekho::preactivate');
       var init = function() {
         fuzzySet.add("record");
         fuzzySet.add("finish");
