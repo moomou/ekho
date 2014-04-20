@@ -27,6 +27,10 @@ app.all('*', addCORSHeaders);
 
 app.use('/static', express.static(__dirname + '/public'));
 
+app.get('/', function(req, res, next) {
+    res.sendfile(__dirname + '/public/index.html');
+});
+
 app.get('/embed/bootstrap.js', function(req, res, next) {
     return embed.bootstrap(req, res, next);
 });
