@@ -56,17 +56,17 @@
     border: 2px solid #00b454; }
   #ekho-container .effect-copy.ready,
   #ekho-container #button-input.ready {
-    background: #00b454 url() no-repeat 0 0; }
+    background: #00b454 no-repeat 0 0; }
   #ekho-container #info-input.attention {
     border: 2px solid #ffad33; }
   #ekho-container .effect-copy.attention,
   #ekho-container #button-input.attention {
-    background: #ffad33 url() no-repeat 0 0; }
+    background: #ffad33 no-repeat 0 0; }
   #ekho-container #info-input.error {
     border: 2px solid #ff5050; }
   #ekho-container .effect-copy.error,
   #ekho-container #button-input.error {
-    background: #ff5050 url() no-repeat 0 0; }
+    background: #ff5050 no-repeat 0 0; }
   #ekho-container .effect-copy {
     position: absolute;
     height: 22px;

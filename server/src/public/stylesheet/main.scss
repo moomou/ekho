@@ -85,7 +85,7 @@
 
   .effect-copy.ready,
   #button-input.ready {
-    background: $ready-color url() no-repeat 0 0;
+    background: $ready-color no-repeat 0 0;
   }
 
   #info-input.attention {
@@ -94,7 +94,7 @@
 
   .effect-copy.attention,
   #button-input.attention {
-    background: $attention-color url() no-repeat 0 0;
+    background: $attention-color no-repeat 0 0;
   }
 
   #info-input.error {
@@ -103,7 +103,7 @@
 
   .effect-copy.error,
   #button-input.error {
-    background: $error-color url() no-repeat 0 0;
+    background: $error-color no-repeat 0 0;
   }
 
   .effect-copy {
