@@ -223,7 +223,6 @@
       var recognition;
       var recognizing;
 
-      var activated = true; // localStorage.getItem('ekho::preactivate');
       var init = function() {
         fuzzySet.add("record");
         fuzzySet.add("finish");
@@ -293,14 +292,12 @@
                   var command = transcript.slice(transcript.indexOf("hello echo") + 11);
                   if (command === "") {
                       UI.activate();
-                      activated = true;
                   } else {
                       parseCmd(command);
                   }
               } else if (transcript.indexOf("hello echo") >= 0) {
                   UI.activate();
-                  activated = true;
-              } else if (activated && transcript) {
+              } else if (transcript) {
                   parseCmd(transcript.trim());
               }
             }
@@ -341,7 +338,7 @@
     })();
 
     // App start
-    
+
     console.log('Ekho started.');
 
     if (username === null) {
