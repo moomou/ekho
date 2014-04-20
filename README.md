@@ -1,4 +1,4 @@
-speak
+Ekho
 =====
 
-VUI as a service 
+For details, please visit https://ekho.io
