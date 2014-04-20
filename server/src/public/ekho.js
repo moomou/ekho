@@ -97,7 +97,7 @@
         function getServerUrl(cmdKey) {
             return SERVER_URL + "/" +
                     username + "/" +
-                    encodeURIComponent(window.location.hostname + window.location.pathname) +
+                    encodeURIComponent(window.location.hostname) +
                     "/commands" +
                     (cmdKey ? "/" + cmdKey : "");
         }
