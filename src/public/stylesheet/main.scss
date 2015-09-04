@@ -1,0 +1,124 @@
+@import "mixins";
+
+#ekho-container {
+  $search-size                : 28px;
+  $search-expanded-size       : 250px;
+  $search-text-color          : #fff;
+  $search-border-color        : #900;
+  $search-normal-bg           : #800;
+  $search-active-bg           : #900;
+  $search-active-border-color : #d00;
+
+  $ready-color : #00b454;
+  $error-color : #ff5050;
+  $attention-color : #ffad33;
+  $zindex: 99999;
+
+  z-index: $zindex;
+
+  /*-------------------------------------*/
+  form#search {
+    position: fixed;
+    right: $search-size + 10px;
+    top: 10px;
+    $zindex: 99999;
+  }
+
+  /*-------------------------------------*/
+  #search label { display: none; }
+  #info-field, #button-field {
+    position: absolute;
+    z-index: $zindex + 2;
+  }
+
+  #button-input {
+    padding: 0;
+    margin: 0;
+    border: 0px;
+    border-radius: 22px;
+    position: absolute;
+    left: 0px;
+    top: 3px;
+    height: 25px;
+    width: 25px;
+    outline: none;
+    color: $search-text-color;
+    font-size: 1em;
+    font-family: inconsolata, monospace;
+    text-indent: $search-size;
+    text-shadow: 0 1px 0 rgba(0,0,0,.4);
+    transition: all .4s ease;
+  }
+
+  /*-------------------------------------*/
+  #info-input {
+    padding: 0;
+    margin: 0;
+    border-radius: $search-size;
+    height: $search-size;
+    width: $search-size;
+    outline: none;
+    color: $search-text-color;
+    font-size: 1em;
+    font-family: inconsolata, monospace;
+    text-indent: $search-size;
+    text-shadow: 0 1px 0 rgba(0,0,0,.4);
+    background-color: rgba(0,0,0,0.5);
+    position: absolute;
+    transition: all .4s ease;
+    right: -28px;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
+    z-index: $zindex + 1;
+  }
+
+  #info-input::-webkit-input-placeholder {
+    color: #ccc;
+  }
+
+  #info-input.expanded {
+    width: $search-expanded-size;
+  }
+
+  #info-input.ready {
+    border: 2px solid $ready-color;
+  }
+
+  .effect-copy.ready,
+  #button-input.ready {
+    background: $ready-color no-repeat 0 0;
+  }
+
+  #info-input.attention {
+    border: 2px solid $attention-color;
+  }
+
+  .effect-copy.attention,
+  #button-input.attention {
+    background: $attention-color no-repeat 0 0;
+  }
+
+  #info-input.error {
+    border: 2px solid $error-color;
+  }
+
+  .effect-copy.error,
+  #button-input.error {
+    background: $error-color no-repeat 0 0;
+  }
+
+  .effect-copy {
+    position: absolute;
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    top: 3px;
+    transition: all 0.5s ease-in;
+    border: 0px;
+    border-radius: 22px;
+  }
+
+  .effect-copy.activated {
+    -webkit-transform: scale(3.0);
+    opacity: 0;
+  }
+}

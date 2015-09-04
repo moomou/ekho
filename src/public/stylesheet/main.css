@@ -1,0 +1,80 @@
+#ekho-container {
+  z-index: 99999;
+  /*-------------------------------------*/
+  /*-------------------------------------*/
+  /*-------------------------------------*/ }
+  #ekho-container form#search {
+    position: fixed;
+    right: 38px;
+    top: 10px; }
+  #ekho-container #search label {
+    display: none; }
+  #ekho-container #info-field, #ekho-container #button-field {
+    position: absolute;
+    z-index: 100001; }
+  #ekho-container #button-input {
+    padding: 0;
+    margin: 0;
+    border: 0px;
+    border-radius: 22px;
+    position: absolute;
+    left: 0px;
+    top: 3px;
+    height: 25px;
+    width: 25px;
+    outline: none;
+    color: white;
+    font-size: 1em;
+    font-family: inconsolata, monospace;
+    text-indent: 28px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    transition: all .4s ease; }
+  #ekho-container #info-input {
+    padding: 0;
+    margin: 0;
+    border-radius: 28px;
+    height: 28px;
+    width: 28px;
+    outline: none;
+    color: white;
+    font-size: 1em;
+    font-family: inconsolata, monospace;
+    text-indent: 28px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    transition: all .4s ease;
+    right: -28px;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
+    z-index: 100000; }
+  #ekho-container #info-input::-webkit-input-placeholder {
+    color: #ccc; }
+  #ekho-container #info-input.expanded {
+    width: 250px; }
+  #ekho-container #info-input.ready {
+    border: 2px solid #00b454; }
+  #ekho-container .effect-copy.ready,
+  #ekho-container #button-input.ready {
+    background: #00b454 no-repeat 0 0; }
+  #ekho-container #info-input.attention {
+    border: 2px solid #ffad33; }
+  #ekho-container .effect-copy.attention,
+  #ekho-container #button-input.attention {
+    background: #ffad33 no-repeat 0 0; }
+  #ekho-container #info-input.error {
+    border: 2px solid #ff5050; }
+  #ekho-container .effect-copy.error,
+  #ekho-container #button-input.error {
+    background: #ff5050 no-repeat 0 0; }
+  #ekho-container .effect-copy {
+    position: absolute;
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    top: 3px;
+    transition: all 0.5s ease-in;
+    border: 0px;
+    border-radius: 22px; }
+  #ekho-container .effect-copy.activated {
+    -webkit-transform: scale(3);
+    opacity: 0; }
