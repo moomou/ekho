@@ -1,7 +1,7 @@
 Ekho
 =====
 
-Super easy way to add voice interactivity to any site. Voice as a service (VUI)!
+Super easy way to add voice interactivity to any site. Voice for user interaction (VUI)!
 
 See https://ekhoapp.herokuapp.com/ for details.
 
