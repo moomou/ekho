@@ -23,7 +23,7 @@
         return path;
     };
 
-    var SERVER_URL = 'https://ekho.io',
+    var SERVER_URL = 'https://ekhoapp.herokuapp.com',
         username   = localStorage.getItem('ekho::profile') || null,
         fuzzySet   = FuzzySet();
 
